@@ -11,11 +11,33 @@
     "react-scripts": "4.0.3",
     "web-vitals": "^1.1.2"
   },
+  "devDependencies": {
+    "eslint": "^8.0.1",
+    "eslint-plugin-react": "^7.26.1",
+    "husky": "^4.3.8",
+    "lint-staged": "^11.2.3",
+    "prettier": "^2.4.1"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint \"**/*.{js,ts}\"",
+    "lint:fix": "eslint \"**/*.{js,ts} --fix\"",
+    "format": "prettier --check \"**/*.{js,ts}\"",
+    "format:fix": "prettier --write \"**/*.{js,ts}\""
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*.{ts,js}": [
+      "npm run format",
+      "npm run lint",
+      "git add"
+    ]
   },
   "eslintConfig": {
     "extends": [
