@@ -12,7 +12,7 @@ module.exports = {
     ecmaVersion: 12,
     sourceType: 'module'
   },
-  plugins: ['react'],
+  plugins: ['eslint-plugin-react'],
   rules: {
     'react/prop-types': [0, {}],
     'react/no-unescaped-entities': [0, {}],
