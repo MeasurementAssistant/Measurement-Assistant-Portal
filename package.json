@@ -1,7 +1,7 @@
 {
   "name": "measurement-assistant-portal",
   "version": "0.1.1",
-  "homepage": "https://MeasurementAssistant.github.io/Measurement-Assistant-Portal",
+  "homepage": "http://measurementassistant.github.io/Measurement-Assistant-Portal/",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
