@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/Measurement-Assistant-Portal/static/css/main.adfede6f.chunk.css",
+    "main.js": "/Measurement-Assistant-Portal/static/js/main.e7f5e4ae.chunk.js",
+    "main.js.map": "/Measurement-Assistant-Portal/static/js/main.e7f5e4ae.chunk.js.map",
+    "runtime-main.js": "/Measurement-Assistant-Portal/static/js/runtime-main.e2914017.js",
+    "runtime-main.js.map": "/Measurement-Assistant-Portal/static/js/runtime-main.e2914017.js.map",
+    "static/css/2.0a9ec390.chunk.css": "/Measurement-Assistant-Portal/static/css/2.0a9ec390.chunk.css",
+    "static/js/2.5784ea53.chunk.js": "/Measurement-Assistant-Portal/static/js/2.5784ea53.chunk.js",
+    "static/js/2.5784ea53.chunk.js.map": "/Measurement-Assistant-Portal/static/js/2.5784ea53.chunk.js.map",
+    "index.html": "/Measurement-Assistant-Portal/index.html",
+    "static/css/2.0a9ec390.chunk.css.map": "/Measurement-Assistant-Portal/static/css/2.0a9ec390.chunk.css.map",
+    "static/css/main.adfede6f.chunk.css.map": "/Measurement-Assistant-Portal/static/css/main.adfede6f.chunk.css.map",
+    "static/js/2.5784ea53.chunk.js.LICENSE.txt": "/Measurement-Assistant-Portal/static/js/2.5784ea53.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.e2914017.js",
+    "static/css/2.0a9ec390.chunk.css",
+    "static/js/2.5784ea53.chunk.js",
+    "static/css/main.adfede6f.chunk.css",
+    "static/js/main.e7f5e4ae.chunk.js"
+  ]
+}
