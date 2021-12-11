@@ -21,7 +21,8 @@
   color: #8b8d92 !important;
 }
 
-.swagger-ui {
+.swagger-ui,
+.swagger-ui .model {
   color: #abc0eb !important;
 }
 

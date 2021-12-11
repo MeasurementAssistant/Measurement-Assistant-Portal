@@ -2,7 +2,13 @@ import React from 'react';
 import './App.css';
 import { Navbar, Container, Nav } from 'react-bootstrap';
 import SwaggerUI from 'swagger-ui-react';
-import "swagger-ui-react/swagger-ui.css";
+import 'swagger-ui-react/swagger-ui.css';
+import GoogleLogin from 'react-google-login';
+
+function responseGoogle(response) {
+  console.log(response);
+  console.log(response.profileObj);
+}
 
 function App() {
   return (
@@ -16,15 +22,20 @@ function App() {
               <Nav.Link href="#home">Documents</Nav.Link>
             </Nav>
             <Nav className="justify-content-end">
-              <Nav.Link href="#sign-in">Sign in</Nav.Link>
-              <Nav.Link href="#sign-up">Sign up</Nav.Link>
+              <GoogleLogin
+                clientId="759950908416-hdi0alconb3krbcblsmidir074uvafoj.apps.googleusercontent.com"
+                buttonText="Sign in"
+                // onSuccess={this.responseGoogle}
+                // onFailure={this.responseGoogle}
+                onSuccess={responseGoogle}
+                onFailure={responseGoogle}
+                cookiePolicy={'single_host_origin'}
+              />
             </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <SwaggerUI
-      url='https://measurment-assistant.herokuapp.com/documentation/json'
-      />
+      <SwaggerUI url="https://measurment-assistant.herokuapp.com/documentation/json" />
     </div>
   );
 }
