@@ -1,16 +1,36 @@
 import React from 'react';
 import './App.css';
 import { Navbar, Container, Nav } from 'react-bootstrap';
+import { useState, useEffect } from 'react';
 import SwaggerUI from 'swagger-ui-react';
 import 'swagger-ui-react/swagger-ui.css';
-import GoogleLogin from 'react-google-login';
+import {GoogleLogin, GoogleLogout} from 'react-google-login';
+import UserService from './services/user.service';
 
-function responseGoogle(response) {
-  console.log(response);
-  console.log(response.profileObj);
-}
 
 function App() {
+  const [userData, setUserData] = useState({});
+  const [signedIn, setSignedIn] = useState(false);
+
+  useEffect(() => {
+    console.log(userData);
+    if(userData.accessKey && userData.username) {
+      setSignedIn(true);
+    }
+  }, [userData]);
+
+  const userService = new UserService();
+
+  const onUserLogIn = async (googleResponse) => {
+    const {accessKey, username} = await userService.createUser(googleResponse);
+    setUserData({accessKey, username});
+  }
+
+  const onUserLogOut = (googleResponse) => {
+    setSignedIn(false);
+    setUserData({});
+  }
+
   return (
     <div className="App">
       <Navbar bg="light" expand="lg">
@@ -22,19 +42,47 @@ function App() {
               <Nav.Link href="#home">Documents</Nav.Link>
             </Nav>
             <Nav className="justify-content-end">
-              <GoogleLogin
-                clientId="759950908416-hdi0alconb3krbcblsmidir074uvafoj.apps.googleusercontent.com"
-                buttonText="Sign in"
-                // onSuccess={this.responseGoogle}
-                // onFailure={this.responseGoogle}
-                onSuccess={responseGoogle}
-                onFailure={responseGoogle}
-                cookiePolicy={'single_host_origin'}
-              />
+              {signedIn ? 
+                (
+                <>
+                <small className={"userName"}>Signed in as {userData.username}</small>  
+                <GoogleLogout 
+                  clientId="759950908416-hdi0alconb3krbcblsmidir074uvafoj.apps.googleusercontent.com"
+                  buttonText="Logout"
+                  onLogoutSuccess={onUserLogOut}
+                />
+                </>
+                ):(
+                <GoogleLogin
+                  clientId="759950908416-hdi0alconb3krbcblsmidir074uvafoj.apps.googleusercontent.com"
+                  buttonText="Sign in"
+                  onSuccess={onUserLogIn}
+                  onFailure={onUserLogIn}
+                  cookiePolicy={'single_host_origin'}
+                />)
+              }
             </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
+      <div className={'accessKeyContainer'}>
+        <div className={'accessKeyInput'}>
+          <input type="text" value={!signedIn ? 'Log in with google to get access key' : userData.accessKey}></input>
+          {!signedIn ? (
+            <GoogleLogin
+              clientId="759950908416-hdi0alconb3krbcblsmidir074uvafoj.apps.googleusercontent.com"
+              buttonText="Sign in"
+              onSuccess={onUserLogIn}
+              onFailure={onUserLogIn}
+              cookiePolicy={'single_host_origin'}
+            />
+          ):(
+            <button className="btnToClipboard"
+            onClick={() => {navigator.clipboard.writeText(userData.accessKey)}}
+            >&#x274F;</button>
+          )}
+        </div>        
+      </div>
       <SwaggerUI url="https://measurment-assistant.herokuapp.com/documentation/json" />
     </div>
   );
