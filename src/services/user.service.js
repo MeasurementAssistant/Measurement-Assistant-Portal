@@ -23,4 +23,27 @@ export default class UserService {
       return error;
     }
   }
+
+  async updateAccessKey(googleResponse) {
+    const googleId = googleResponse.googleId;
+    const email = googleResponse.profileObj.email;
+    const idToken = googleResponse.tokenId;
+    try {
+      const response = await axios({
+        url: 'https://measurment-assistant.herokuapp.com/api/user/accesskey',
+        method: 'PUT',
+        headers: {
+          Authorization: idToken
+        },
+        data: {
+          googleId,
+          email
+        }
+      });
+      console.log(response);
+      return response.data.userData;
+    } catch (error) {
+      return error;
+    }
+  }
 }

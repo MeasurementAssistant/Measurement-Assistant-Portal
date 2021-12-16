@@ -4,9 +4,8 @@ import { Navbar, Container, Nav } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import SwaggerUI from 'swagger-ui-react';
 import 'swagger-ui-react/swagger-ui.css';
-import {GoogleLogin, GoogleLogout} from 'react-google-login';
+import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import UserService from './services/user.service';
-
 
 function App() {
   const [userData, setUserData] = useState({});
@@ -14,7 +13,7 @@ function App() {
 
   useEffect(() => {
     console.log(userData);
-    if(userData.accessKey && userData.username) {
+    if (userData.accessKey && userData.username) {
       setSignedIn(true);
     }
   }, [userData]);
@@ -22,14 +21,19 @@ function App() {
   const userService = new UserService();
 
   const onUserLogIn = async (googleResponse) => {
-    const {accessKey, username} = await userService.createUser(googleResponse);
-    setUserData({accessKey, username});
-  }
+    const { accessKey, username } = await userService.createUser(googleResponse);
+    setUserData({ accessKey, username });
+  };
+
+  const onUpdateAccessKey = async (googleResponse) => {
+    const { accessKey, username } = await userService.createUupdateAccessKeyser(googleResponse);
+    setUserData({ accessKey, username });
+  };
 
   const onUserLogOut = (googleResponse) => {
     setSignedIn(false);
     setUserData({});
-  }
+  };
 
   return (
     <div className="App">
@@ -42,32 +46,34 @@ function App() {
               <Nav.Link href="#home">Documents</Nav.Link>
             </Nav>
             <Nav className="justify-content-end">
-              {signedIn ? 
-                (
+              {signedIn ? (
                 <>
-                <small className={"userName"}>Signed in as {userData.username}</small>  
-                <GoogleLogout 
-                  clientId="759950908416-hdi0alconb3krbcblsmidir074uvafoj.apps.googleusercontent.com"
-                  buttonText="Logout"
-                  onLogoutSuccess={onUserLogOut}
-                />
+                  <small className={'userName'}>Signed in as {userData.username}</small>
+                  <GoogleLogout
+                    clientId="759950908416-hdi0alconb3krbcblsmidir074uvafoj.apps.googleusercontent.com"
+                    buttonText="Sign out"
+                    onLogoutSuccess={onUserLogOut}
+                  />
                 </>
-                ):(
+              ) : (
                 <GoogleLogin
                   clientId="759950908416-hdi0alconb3krbcblsmidir074uvafoj.apps.googleusercontent.com"
                   buttonText="Sign in"
                   onSuccess={onUserLogIn}
                   onFailure={onUserLogIn}
                   cookiePolicy={'single_host_origin'}
-                />)
-              }
+                />
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
       <div className={'accessKeyContainer'}>
         <div className={'accessKeyInput'}>
-          <input type="text" value={!signedIn ? 'Log in with google to get access key' : userData.accessKey}></input>
+          <input
+            type="text"
+            value={!signedIn ? 'Log in with google to get access key' : userData.accessKey}
+          ></input>
           {!signedIn ? (
             <GoogleLogin
               clientId="759950908416-hdi0alconb3krbcblsmidir074uvafoj.apps.googleusercontent.com"
@@ -76,12 +82,22 @@ function App() {
               onFailure={onUserLogIn}
               cookiePolicy={'single_host_origin'}
             />
-          ):(
-            <button className="btnToClipboard"
-            onClick={() => {navigator.clipboard.writeText(userData.accessKey)}}
-            >&#x274F;</button>
+          ) : (
+            <>
+              <button className="btnToClipboard" onClick={onUpdateAccessKey}>
+                &#x274F;
+              </button>
+              <button
+                className="btnToClipboard"
+                onClick={() => {
+                  navigator.clipboard.writeText(userData.accessKey);
+                }}
+              >
+                &#8635;
+              </button>
+            </>
           )}
-        </div>        
+        </div>
       </div>
       <SwaggerUI url="https://measurment-assistant.herokuapp.com/documentation/json" />
     </div>
