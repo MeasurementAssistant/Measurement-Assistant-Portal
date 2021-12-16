@@ -1,18 +1,20 @@
 import React from 'react';
-import './App.css';
-import { Navbar, Container, Nav } from 'react-bootstrap';
-import { useState, useEffect } from 'react';
 import SwaggerUI from 'swagger-ui-react';
-import 'swagger-ui-react/swagger-ui.css';
+import { Navbar, Container, Nav } from 'react-bootstrap';
+import Alert from 'react-bootstrap/Alert'
+import { useState, useEffect } from 'react';
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import UserService from './services/user.service';
+import './App.css';
+import 'swagger-ui-react/swagger-ui.css';
 
 function App() {
   const [userData, setUserData] = useState({});
   const [signedIn, setSignedIn] = useState(false);
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
-    console.log(userData);
+    // console.log(userData);
     if (userData.accessKey && userData.username) {
       setSignedIn(true);
     }
@@ -22,15 +24,20 @@ function App() {
 
   const onUserLogIn = async (googleResponse) => {
     const { accessKey, username } = await userService.createUser(googleResponse);
-    setUserData({ accessKey, username });
+    const { tokenId, googleId } = googleResponse
+    setUserData({ accessKey, username, tokenId, googleId });
   };
 
-  const onUpdateAccessKey = async (googleResponse) => {
-    const { accessKey, username } = await userService.createUupdateAccessKeyser(googleResponse);
-    setUserData({ accessKey, username });
+  const onUpdateAccessKey = async () => {
+    const response = await userService.updateAccessKey(userData.username, userData.tokenId, userData.googleId);
+    if(response.name=='Error'){
+     setShow(true)
+    }else{
+    const accessKey= response.accessKey;
+    setUserData({ ...userData, accessKey});}
   };
 
-  const onUserLogOut = (googleResponse) => {
+  const onUserLogOut = () => {
     setSignedIn(false);
     setUserData({});
   };
@@ -84,14 +91,14 @@ function App() {
             />
           ) : (
             <>
-              <button className="btnToClipboard" onClick={onUpdateAccessKey}>
+              <button className="btnToClipboard"  onClick={() => {
+                  navigator.clipboard.writeText(userData.accessKey);
+                }}>
                 &#x274F;
               </button>
               <button
                 className="btnToClipboard"
-                onClick={() => {
-                  navigator.clipboard.writeText(userData.accessKey);
-                }}
+                onClick={onUpdateAccessKey}
               >
                 &#8635;
               </button>
@@ -99,8 +106,15 @@ function App() {
           )}
         </div>
       </div>
+      {show==true? (
+        <Alert variant="danger" onClose={() => setShow(false)} dismissible>
+          <Alert.Heading>Oops!</Alert.Heading>
+          <p>You should sign in again</p>
+        </Alert>
+        ):<></>}
       <SwaggerUI url="https://measurment-assistant.herokuapp.com/documentation/json" />
     </div>
+    
   );
 }
 
