@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400&display=swap');
+
+* {
+  font-family: 'Poppins';
+}
+
 .App {
   background-color: #282c34;
 }
@@ -32,4 +38,53 @@
 .swagger-ui a.nostyle:visited,
 .swagger-ui .response-col_status {
   color: #16777a !important;
+}
+
+.accessKeyContainer {
+  width: 100%;
+  padding: 2em 0;
+  display: flex;
+  align-items: center;
+  background-color: #303540;
+  box-shadow: 0 0 5px #4365bd, 0 0 10px #4365bd;
+}
+
+.userName {
+  display: flex;
+  align-items: center;
+  padding: 0 0.5em;
+  color: #303540;
+  font-weight: 200;
+}
+
+.accessKeyInput {
+  width: 100%;
+  height: 2.5em;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+.accessKeyInput > input,
+.btnToClipboard {
+  border-radius: 0.2em;
+  border: none;
+  outline: none;
+}
+
+.accessKeyInput > input {
+  width: 50%;
+  padding: 0 0.5em;
+  color: #4283d0;
+}
+
+.btnToClipboard {
+  background: #4283d0;
+  color: #fff;
+  font-size: 1.6em;
+  padding: 0 0.2em;
+  margin-left: 0.2em;
+}
+.btnToClipboard:active {
+  color: #4283d0;
+  background-color: #fff;
 }
