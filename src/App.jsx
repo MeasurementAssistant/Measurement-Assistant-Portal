@@ -1,5 +1,7 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import SwaggerUI from 'swagger-ui-react';
+import { useCookies } from 'react-cookie';
 import { Navbar, Container, Nav } from 'react-bootstrap';
 import Alert from 'react-bootstrap/Alert';
 import { useState, useEffect } from 'react';
@@ -9,13 +11,20 @@ import './App.css';
 import 'swagger-ui-react/swagger-ui.css';
 
 function App() {
-  const [userData, setUserData] = useState({});
-  const [signedIn, setSignedIn] = useState(false);
+  const [cookies, setCookie, removeCookie] = useCookies(['UserData']);
+  const [userData, setUserData] = useState({
+    username: cookies.UserData?.username,
+    accessKey: cookies.UserData?.accessKey
+  });
   const [show, setShow] = useState(false);
 
   useEffect(() => {
     if (userData.accessKey && userData.username) {
-      setSignedIn(true);
+      setCookie(
+        'UserData',
+        { username: userData.username, accessKey: userData.accessKey },
+        { maxAge: 1800 }
+      );
     }
   }, [userData]);
 
@@ -42,7 +51,7 @@ function App() {
   };
 
   const onUserLogOut = () => {
-    setSignedIn(false);
+    removeCookie('UserData');
     setUserData({});
   };
 
@@ -57,7 +66,7 @@ function App() {
               <Nav.Link href="#home">Documents</Nav.Link>
             </Nav>
             <Nav className="justify-content-end">
-              {signedIn ? (
+              {cookies.UserData ? (
                 <>
                   <small className={'userName'}>Signed in as {userData.username}</small>
                   <GoogleLogout
@@ -77,9 +86,9 @@ function App() {
         <div className={'accessKeyInput'}>
           <input
             type="text"
-            value={!signedIn ? 'Log in with google to get access key' : userData.accessKey}
+            value={!cookies.UserData ? 'Log in with google to get access key' : userData.accessKey}
           ></input>
-          {!signedIn ? (
+          {!cookies.UserData ? (
             <GoogleLogin
               clientId="759950908416-hdi0alconb3krbcblsmidir074uvafoj.apps.googleusercontent.com"
               buttonText="Sign in"
