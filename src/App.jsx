@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React from 'react';
 import SwaggerUI from 'swagger-ui-react';
 import { useCookies } from 'react-cookie';
@@ -121,7 +120,10 @@ function App() {
       ) : (
         <></>
       )}
-      <SwaggerUI url="https://measurment-assistant.herokuapp.com/documentation/json" />
+      <SwaggerUI
+        supportedSubmitMethods={[]}
+        url="https://measurment-assistant.herokuapp.com/documentation/json"
+      />
     </div>
   );
 }
